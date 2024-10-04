@@ -1,0 +1,77 @@
+body {
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background: linear-gradient(135deg, #FF6F61, #7fdde0, #bfce6e, #c593af);
+}
+.container {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+  width: 360px;
+  text-align: center;
+}
+h2 {
+  margin-top: 0;
+  color: #333;
+  font-size: 24px;
+  font-weight: bold;
+}
+input, select {
+  width: 100%;
+  padding: 12px;
+  margin: 12px 0;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+input:focus, select:focus {
+  border-color: #FF6F61;
+  outline: none;
+}
+button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background-color: #FF6F61;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+button:hover {
+  background-color: #E55D5D;
+  transform: scale(1.03);
+}
+button:active {
+  transform: scale(0.98);
+}
+.toggle-link {
+  display: block;
+  margin-top: 15px;
+  color: #FF6F61;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.toggle-link:hover {
+  color: #E55D5D;
+  text-decoration: underline;
+}
+.error-message {
+  color: #3e9e21;
+  font-size: 0.875em;
+  margin-top: 10px;
+}
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

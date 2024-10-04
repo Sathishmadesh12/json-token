@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register & Login</title>
+    <link rel="stylesheet" href="sa.css">
+</head>
+<body>
+    <div class="container">
+        <h2 id="form-title">Register</h2>
+
+        <!-- Registration Form -->
+        <form id="register-form" class="form-container" style="display: block;">
+            <input type="text" id="register-name" placeholder="Name" required>
+            <input type="email" id="register-email" placeholder="Email" required>
+            <input type="password" id="register-password" placeholder="Password" required>
+            <input type="tel" id="register-mobile" placeholder="Mobile Number" required>
+            <select id="register-gender" required>
+                <option value="" disabled selected>Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+            <button type="submit">Register</button>
+            <div id="register-error-message" class="error-message"></div>
+        </form>
+        
+
+        <!-- Login Form -->
+        <form id="login-form" class="form-container" style="display: none;">
+            <input type="email" id="login-email" placeholder="Email" required>
+            <input type="password" id="login-password" placeholder="Password" required>
+            <button type="submit">Login</button>
+            <div id="login-error-message" class="error-message"></div>
+            <div class="toggle-link" onclick="showForgotPasswordForm()">Forgot Password?</div>
+        </form>
+
+        <!-- Forgot Password Form -->
+        <form id="forgot-password-form" class="form-container" style="display: none;">
+            <input type="email" id="forgot-email" placeholder="Enter your email" required>
+            <button type="submit">Send OTP</button>
+            <div id="forgot-password-error-message" class="error-message"></div>
+        </form>
+
+        <!-- Reset Password Form -->
+        <form id="reset-password-form" class="form-container" style="display: none;">
+            <input type="email" id="reset-email" placeholder="Enter your email" required>
+            <input type="text" id="reset-otp" placeholder="Enter OTP" required>
+            <input type="password" id="reset-new-password" placeholder="New Password" required>
+            <button type="submit">Reset Password</button>
+            <div id="reset-password-error-message" class="error-message"></div>
+        </form>
+
+        <div class="toggle-link" id="toggle-link" onclick="toggleForms()">Already have an account? Login</div>
+    </div>
+
+    <script>
+        // Toggle between forms
+        function toggleForms() {
+            const registerForm = document.getElementById('register-form');
+            const loginForm = document.getElementById('login-form');
+            const forgotPasswordForm = document.getElementById('forgot-password-form');
+            const resetPasswordForm = document.getElementById('reset-password-form');
+            const formTitle = document.getElementById('form-title');
+            const toggleLink = document.getElementById('toggle-link');
+
+            if (registerForm.style.display === 'block') {
+                registerForm.style.display = 'none';
+                loginForm.style.display = 'block';
+                forgotPasswordForm.style.display = 'none';
+                resetPasswordForm.style.display = 'none';
+                formTitle.textContent = 'Login';
+                toggleLink.textContent = "Don't have an account? Register";
+            } else if (loginForm.style.display === 'block') {
+                loginForm.style.display = 'none';
+                forgotPasswordForm.style.display = 'block';
+                resetPasswordForm.style.display = 'none';
+                formTitle.textContent = 'Forgot Password';
+                toggleLink.textContent = 'Remembered your password? Login';
+            } else if (forgotPasswordForm.style.display === 'block') {
+                forgotPasswordForm.style.display = 'none';
+                resetPasswordForm.style.display = 'block';
+                formTitle.textContent = 'Reset Password';
+            } else {
+                registerForm.style.display = 'block';
+                loginForm.style.display = 'none';
+                forgotPasswordForm.style.display = 'none';
+                resetPasswordForm.style.display = 'none';
+                formTitle.textContent = 'Register';
+                toggleLink.textContent = 'Already have an account? Login';
+            }
+        }
+
+        // Show forgot password form
+        function showForgotPasswordForm() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('forgot-password-form').style.display = 'block';
+            document.getElementById('form-title').textContent = 'Forgot Password';
+            document.getElementById('toggle-link').textContent = 'Remembered your password? Login';
+        }
+
+        // Handle registration
+        function handleRegister(event) {
+    event.preventDefault();
+
+    const name = document.getElementById('register-name').value;
+    const email = document.getElementById('register-email').value;
+    const password = document.getElementById('register-password').value;
+    const gender = document.getElementById('register-gender').value;
+    const mobile = document.getElementById('register-mobile').value; 
+
+    fetch('http://localhost:3000/v1/regester', {  
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, email, password, gender, mobile }) 
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 200) {
+            alert('Registration successful.');
+            toggleForms();
+        } else {
+            document.getElementById('register-error-message').textContent = data.message || 'Registration failed';
+        }
+    })
+    .catch(error => {
+        console.error(error);
+        document.getElementById('register-error-message').textContent = 'An error occurred. Please try again.';
+    });
+}
+
+        // Handle login
+        function handleLogin(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            fetch('http://localhost:3000/v1/regester/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 200) {
+                    alert('Login successful.');
+                } else {
+                    document.getElementById('login-error-message').textContent = data.message || 'Login failed';
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                document.getElementById('login-error-message').textContent = 'An error occurred. Please try again.';
+            });
+        }
+
+        // Handle forgot password
+        function handleForgotPassword(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('forgot-email').value;
+
+            fetch('http://localhost:3000/v1/regester/forgotPassword', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 200) {
+                    alert('OTP sent to your email.');
+                    toggleForms(); 
+                } else {
+                    document.getElementById('forgot-password-error-message').textContent = data.message || 'Failed to send OTP';
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                document.getElementById('forgot-password-error-message').textContent = 'An error occurred. Please try again.';
+            });
+        }
+
+        // Handle reset password
+        function handleResetPassword(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('reset-email').value;
+            const otp = document.getElementById('reset-otp').value;
+            const newPassword = document.getElementById('reset-new-password').value;
+
+            fetch('http://localhost:3000/v1/regester/resetPassword', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, otp, newPassword })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 200) {
+                    alert('Password reset successful.');
+                    toggleForms();
+                } else {
+                    document.getElementById('reset-password-error-message').textContent = data.message || 'Password reset failed';
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                document.getElementById('reset-password-error-message').textContent = 'An error occurred. Please try again.';
+            });
+        }
+
+        // Attach event listeners to forms
+        document.getElementById('register-form').addEventListener('submit', handleRegister);
+        document.getElementById('login-form').addEventListener('submit', handleLogin);
+        document.getElementById('forgot-password-form').addEventListener('submit', handleForgotPassword);
+        document.getElementById('reset-password-form').addEventListener('submit', handleResetPassword);
+    </script>
+</body>
+</html>
