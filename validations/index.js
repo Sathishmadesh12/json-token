@@ -1,0 +1,1 @@
+module.exports.regesterValidation = require('./regester.validation');
